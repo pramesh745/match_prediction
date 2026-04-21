@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:match_prediction_app/screens/admin_screens/admin_homepage.dart';
 import 'package:match_prediction_app/screens/auth/register_page.dart';
 import 'package:match_prediction_app/screens/user_screens/user_homepage.dart';
 import 'package:match_prediction_app/services/auth_provider.dart';
@@ -25,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     final success = await TokenStorage.isLoggedIn();
     if (success) {
       Navigator.pushAndRemoveUntil(
-          context, MaterialPageRoute(builder: (_) => UserHomepage()), (route)=> false);
+          context, MaterialPageRoute(builder: (_) => AdminHomePage()), (route)=> false);
     }
   }
 
@@ -89,10 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "Email cannot be Empty";
-                                } else if (!value.contains("@gmail.com")) {
-                                  return "Please enter a valid email";
                                 }
-                                return null;
                               },
                               controller: _emailController,
                               decoration: InputDecoration(
@@ -177,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                                       Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (_) => UserHomepage(),
+                                          builder: (_) => AdminHomePage(),
                                         ),
                                             (route) => false,
                                       );
