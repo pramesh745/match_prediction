@@ -23,4 +23,8 @@ class TokenStorage {
     return token != null && token.isNotEmpty;
   }
 
+  static Future<String?>fetchToken()async{
+    return await _storage.read(key: _accessTokenKey);
+  }
+
 }

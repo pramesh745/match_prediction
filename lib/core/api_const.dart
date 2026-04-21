@@ -4,4 +4,7 @@ class ApiConst {
   static const String registerApi = "$baseUrl/auth/register";
   static const String loginApi = "$baseUrl/auth/login";
 
+  static const String postGetBranchApi = "$baseUrl/branches";
+
+
 }
