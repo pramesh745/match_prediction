@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:match_prediction_app/core/api_const.dart';
 import 'package:match_prediction_app/utils/token_storage.dart';
 
+import '../core/models/get_auth_me.dart';
 import '../core/models/get_branch.dart';
 
 class BranchProvider extends ChangeNotifier {

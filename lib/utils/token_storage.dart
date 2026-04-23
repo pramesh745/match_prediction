@@ -13,8 +13,9 @@ class TokenStorage {
     await _storage.write(key: _accessTokenKey, value: accessToken);
   }
 
-  static Future<void>logout()async{
+  static Future<bool>logout()async{
     await _storage.deleteAll();
+    return true;
   }
 
 
