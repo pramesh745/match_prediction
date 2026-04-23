@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:match_prediction_app/core/api_const.dart';
 import 'package:match_prediction_app/core/models/auth_token.dart';
+import 'package:match_prediction_app/core/models/get_auth_me.dart';
 import 'package:match_prediction_app/utils/token_storage.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -15,6 +16,7 @@ class AuthProvider extends ChangeNotifier {
 
   String get errorMessage => _errorMessage;
 
+  GetAuthMe? getUserMe;
 
   Future<bool> postRegister({
     required String displayName,
@@ -82,4 +84,67 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> postUser({
+    required String displayName,
+    required String email,
+    required String password,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+    final token = TokenStorage.fetchToken();
+
+    try {
+      final url = Uri.parse(ApiConst.postUsers);
+      final success = await http.post(
+        url,
+        headers: {
+          "accept": "*/*",
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(({
+          "name": displayName,
+          "email": email,
+          "password": password,
+        })),
+      );
+      if (success.statusCode == 200 || success.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getAuthMe() async {
+    _isLoading = true;
+    notifyListeners();
+
+    final token = await TokenStorage.fetchToken();
+
+    try {
+      final url = Uri.parse(ApiConst.authMe);
+      final response = await http.get(
+        url,
+        headers: {"accept": "*/*", "Authorization": "Bearer $token"},
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> json = jsonDecode(response.body);
+        getUserMe = GetAuthMe.fromJson(json);
+      }else{
+        _errorMessage = "Failed: ${response.statusCode}";
+      }
+    } catch (e) {
+      _errorMessage = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

@@ -6,5 +6,9 @@ class ApiConst {
 
   static const String postGetBranchApi = "$baseUrl/branches";
 
+  static const String postUsers = "$baseUrl/users";
+
+
+  static const String authMe = "$baseUrl/auth/me";
 
 }
